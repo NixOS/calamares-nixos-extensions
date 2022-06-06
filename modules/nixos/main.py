@@ -544,11 +544,11 @@ def run():
             cfg += cfgunfree
 
     cfg += cfgpkgs
-    # Use firefox as default as a graphical web browser, and add kate to plasma desktop
+    # Use Brave as default as a graphical web browser, and add kate to plasma desktop
     if gs.value("packagechooser_packagechooser") == "plasma":
-        catenate(variables, "pkgs", "\n    firefox\n    kate")
+        catenate(variables, "pkgs", "\n    brave\n    kate")
     elif gs.value("packagechooser_packagechooser") != "":
-        catenate(variables, "pkgs", "\n    firefox")
+        catenate(variables, "pkgs", "\n    brave")
     else:
         catenate(variables, "pkgs", "")
 
