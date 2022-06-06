@@ -546,7 +546,7 @@ def run():
     cfg += cfgpkgs
     # Use Brave as default as a graphical web browser, and add kate to plasma desktop
     if gs.value("packagechooser_packagechooser") == "plasma":
-        catenate(variables, "pkgs", "\n    brave\n    kate\n    discover\n    appstream-qt")
+        catenate(variables, "pkgs", "\n    brave\n    kate\n    discover\n    appstream")
     elif gs.value("packagechooser_packagechooser") == "gnome":
         catenate(variables, "pkgs", "\n    brave\n    gnome-software\n    appstream")
     elif gs.value("packagechooser_packagechooser") != "":
