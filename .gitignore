@@ -7,3 +7,6 @@ build/
 *.qmlc
 .vscode/
 **/__pycache__/
+
+results
+result

@@ -1,0 +1,27 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1726550193,
+        "narHash": "sha256-T9fLXB7NeO9II+Q1HhZ1IY8iRdFDLdSJyewov3M7vWA=",
+        "owner": "friedrichaltheide",
+        "repo": "nixpkgs",
+        "rev": "2215368ba801431bab0f3ae30211ea43014fe781",
+        "type": "github"
+      },
+      "original": {
+        "owner": "friedrichaltheide",
+        "ref": "calamares-nixos-extensions-custom-installer",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
