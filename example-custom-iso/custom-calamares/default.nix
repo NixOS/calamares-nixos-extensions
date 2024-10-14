@@ -23,6 +23,7 @@
         ../modules/virtualboxGuest.nix
       ];
 
+      # default snippets can also be removed, by setting the snippet to an empty string
       unfree = '''';
 
       bootefi = ''
