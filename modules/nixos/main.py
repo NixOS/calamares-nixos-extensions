@@ -404,7 +404,7 @@ def run():
         and gs.value("packagechooser_packagechooser") != ""
     ):
         cfg += getCustomOrDefaultSnippet('misc')
-        cfg += getCustonOrDefaultSnippet('audio')
+        cfg += getCustomOrDefaultSnippet('audio')
 
     if gs.value("username") is not None:
         fullname = gs.value("fullname")
