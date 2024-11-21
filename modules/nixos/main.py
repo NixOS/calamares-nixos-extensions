@@ -49,17 +49,17 @@ def getCustomOrDefaultSnippet(snippetName):
     return ""
 
 def copyModules(root_mount_point, subpath):
-    customModuleFolderPath = '{}/{}/.'.format(getCalamaresNixosModulePath(), subpath)
+    srcModuleFolderPath = '{}/{}/.'.format(getCalamaresNixosModulePath(), subpath)
     destModuleFolderPath = '{}/etc/nixos/modules/'.format(root_mount_point)
-    if not os.path.isdir(destModuleFolderPath):
-        libcalamares.utils.host_env_process_output(
-            ["mkdir", "-p", destModuleFolderPath], None
-        )
-    if os.path.isdir(customModuleFolderPath):
-        libcalamares.utils.debug('Copying module directory {}'.format(customModuleFolderPath))
-        libcalamares.utils.host_env_process_output(["cp", "-r", customModuleFolderPath, destModuleFolderPath], None)
+    if os.path.isdir(srcModuleFolderPath) and len(os.listdir(srcModuleFolderPath)) != 0:
+        if not os.path.isdir(destModuleFolderPath):
+            libcalamares.utils.host_env_process_output(
+                ["mkdir", "-p", destModuleFolderPath], None
+            )
+        libcalamares.utils.debug('Copying module directory {}'.format(srcModuleFolderPath))
+        libcalamares.utils.host_env_process_output(["cp", "-r", srcModuleFolderPath, destModuleFolderPath], None)
     else:
-        libcalamares.utils.debug('Skipping non-existing module directory {}'.format(customModuleFolderPath))
+        libcalamares.utils.debug('Skipping non-existing module directory {}'.format(srcModuleFolderPath))
 
 def env_is_set(name):
     envValue = os.environ.get(name)
