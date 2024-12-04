@@ -81,6 +81,16 @@ def generateProxyStrings():
 
     return proxyEnv
 
+def generateNixOptionStringFromHost(optionName):
+    out = subprocess.run(["nix", "config", "show", optionName], capture_output=True, text=True)
+    if out.returncode == 0:
+        return [
+            "--option",
+            optionName,
+            out.stdout.strip()
+        ]
+    return []
+
 def pretty_name():
     return _("Installing NixOS.")
 
@@ -558,6 +568,12 @@ def run():
             root_mount_point
         ]
     )
+
+    # use all substituters from the installer in nixos-install
+    nixosInstallCmd.extend(generateNixOptionStringFromHost("substituters"))
+    nixosInstallCmd.extend(generateNixOptionStringFromHost("trusted-public-keys"))
+
+    libcalamares.utils.debug('Install CMD: {}'.format(nixosInstallCmd))
 
     # Install customizations
     try:
