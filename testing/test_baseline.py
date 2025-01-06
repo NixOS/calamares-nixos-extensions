@@ -15,6 +15,7 @@ def test_baseline(
     mock_open_ngcconf,
     mock_open_hwconf,
     mock_Popen,
+    mock_subprocess_run,
 ):
     result = run()
 
@@ -74,6 +75,16 @@ def test_baseline(
 
     # libcalamares.job.setprogress(0.3)
     assert mock_libcalamares.job.setprogress.mock_calls[3] == mocker.call(0.3)
+
+    assert mock_subprocess_run.mock_calls[0] == mocker.call(
+        ["nix", "config", "show", "substituters"],
+        capture_output=True, text=True
+    )
+
+    assert mock_subprocess_run.mock_calls[1] == mocker.call(
+        ["nix", "config", "show", "trusted-public-keys"],
+        capture_output=True, text=True
+    )
 
     # proc = subprocess.Popen(["pkexec", "nixos-install", "--no-root-passwd", "--root", root_mount_point], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     mock_Popen.assert_called_once_with(
