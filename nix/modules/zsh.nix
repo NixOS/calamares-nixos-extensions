@@ -1,11 +1,4 @@
 {
-  config,
-  lib,
-  pkgs,
-  modulesPath,
-  ...
-}:
-{
   programs.zsh = {
     enable = true;
     enableCompletion = true;

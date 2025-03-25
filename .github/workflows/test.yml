@@ -11,3 +11,27 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - run: nix run
+
+  build-pkg:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - run: nix build .#calamares-nixos-extensions
+
+  build-iso:
+    needs: build-pkg
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        name:
+          - "defaultCalamaresIso"
+          - "customCalamaresIso"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - run: nix build .#${{ matrix.name }}

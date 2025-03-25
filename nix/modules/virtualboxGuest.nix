@@ -1,11 +1,7 @@
 {
-  config,
   lib,
-  pkgs,
-  modulesPath,
   ...
 }:
-
 {
   virtualisation.virtualbox.guest = {
     enable = lib.mkForce true;

@@ -1,14 +1,5 @@
 {
-  config,
-  pkgs,
-  lib,
-  inputs,
-  ...
-}:
-{
-  programs.calamares-nixos-extensions = {
-    enable = true;
-    autoStart = true;
+  programs.calamares-nixos-extensions-upstream = {
     snippets = {
       # The following strings replace the `imports` in the final configuation.nix
       imports = [
@@ -19,8 +10,8 @@
 
       # The following nix files are copied to /etc/nixos/modules/ and can then be included using `imports`
       modules = [
-        ../modules/zsh.nix
-        ../modules/virtualboxGuest.nix
+        ./zsh.nix
+        ./virtualboxGuest.nix
       ];
 
       # default snippets can also be removed, by setting the snippet to an empty string

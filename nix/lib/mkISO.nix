@@ -1,17 +1,14 @@
 name:
 {
-  nixpkgs,
   system,
-  inputs,
   lib,
   withModules,
   nixosSystem,
 }:
-nixosSystem rec {
+nixosSystem {
   inherit system;
 
   modules = withModules ++ [
-    (../overlays)
     (
       {
         lib,
