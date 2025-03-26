@@ -46,6 +46,9 @@ def mock_getoutput(mocker):
         return_value="24.05.20240815.c3d4ac7 (Uakari)",
     )
 
+@pytest.fixture
+def mock_subprocess_run(mocker):
+    return mocker.Mock(name="subprocess.run")
 
 @pytest.fixture
 def mock_Popen(mocker):
@@ -112,6 +115,7 @@ def mock_open_kbdmodelmap(mocker):
 @pytest.fixture
 def mock_open(mocker, mock_open_ngcconf, mock_open_hwconf, mock_open_kbdmodelmap):
     testing_dir = os.path.dirname(__file__)
+    testing_parent_dir = os.path.dirname(testing_dir)
 
     ngcconf_txt = ""
     with open(os.path.join(testing_dir, "nixos-generate-config.conf"), "r") as ngcconf:
@@ -125,16 +129,23 @@ def mock_open(mocker, mock_open_ngcconf, mock_open_hwconf, mock_open_kbdmodelmap
     with open(os.path.join(testing_dir, "kbd-model-map"), "r") as kbdmodelmap:
         kbdmodelmap_txt = kbdmodelmap.read()
 
+    buildin_open = open
     mock_open = mocker.Mock("open")
 
     def fake_open(*args, **kwargs):
         file, *mode = args
         assert len(mode) == 0 or mode[0] == "r", "open() called with non-'r' mode"
 
-        if file.endswith("nixos-generate-config.conf"):
-            return mocker.mock_open(mock=mock_open_ngcconf, read_data=ngcconf_txt)(*args)
+        if file.startswith("/run/current-system/sw/lib/calamares/modules/nixos/"):
+            redirectedDir = '{}/modules/nixos/'.format(testing_parent_dir)
+            redirectedFile = file.replace("/run/current-system/sw/lib/calamares/modules/nixos/", redirectedDir)
+            return buildin_open(redirectedFile, "r")
+        elif file.startswith(testing_dir):
+            return buildin_open(file, "r")
         elif file.endswith("hardware-configuration.nix"):
             return mocker.mock_open(mock=mock_open_hwconf, read_data=hwconf_txt)(*args)
+        elif file.endswith("nixos-generate-config.conf"):
+            return mocker.mock_open(mock=mock_open_ngcconf, read_data=ngcconf_txt)(*args)
         elif file.endswith("kbd-model-map"):
             return mocker.mock_open(
                 mock=mock_open_kbdmodelmap, read_data=kbdmodelmap_txt
@@ -155,6 +166,7 @@ def run(
     mock_check_output,
     mock_getoutput,
     mock_Popen,
+    mock_subprocess_run,
     mock_open,
 ):
     sys.modules["libcalamares"] = mock_libcalamares
@@ -164,6 +176,7 @@ def run(
     mocker.patch("subprocess.check_output", mock_check_output)
     mocker.patch("subprocess.getoutput", mock_getoutput)
     mocker.patch("subprocess.Popen", mock_Popen)
+    mocker.patch("subprocess.run", mock_subprocess_run)
 
     mocker.patch("builtins.open", mock_open)
 
