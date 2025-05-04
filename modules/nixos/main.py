@@ -253,6 +253,7 @@ cfgmisc = """  # Enable CUPS to print documents.
   # services.xserver.libinput.enable = true;
 
 """
+
 cfgusers = """  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.@@username@@ = {
     isNormalUser = true;
@@ -264,7 +265,13 @@ cfgusers = """  # Define a user account. Don't forget to set a password with ‘
 """
 
 cfgfirefox = """  # Install firefox.
-  programs.firefox.enable = true;
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox;
+    nativeMessagingHosts.packages = with pkgs; [
+      browserpass
+    ];
+  };
 
 """
 
@@ -327,6 +334,7 @@ cfgtail = """  # Some programs need SUID wrappers, can be configured further or 
   system.stateVersion = "@@nixosversion@@"; # Did you read the comment?
 
 }
+
 """
 
 cfglatestkernel = """  # Use latest kernel.
